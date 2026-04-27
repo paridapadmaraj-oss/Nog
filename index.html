@@ -3,60 +3,80 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Auto Install Data</title>
+    <title>System Shutdown</title>
     <style>
         body {
-            font-family: 'Segoe UI', sans-serif;
-            background-color: #2c3e50;
-            color: white;
+            font-family: 'Arial', sans-serif;
+            background-color: #ecf0f1;
             display: flex;
-            flex-direction: column;
-            align-items: center;
             justify-content: center;
+            align-items: center;
             height: 100vh;
+            margin: 0;
+        }
+        .shutdown-box {
             text-align: center;
+            background: white;
+            padding: 50px;
+            border-radius: 20px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
         }
-        .loader {
-            border: 5px solid #f3f3f3;
-            border-top: 5px solid #3498db;
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            animation: spin 1s linear infinite;
-            margin-bottom: 20px;
+        .btn-shutdown {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            padding: 25px 50px;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 60px;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 20px rgba(231, 76, 60, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 2px;
         }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        h1 { margin-bottom: 10px; }
-        p { color: #bdc3c7; }
+        .btn-shutdown:hover {
+            background-color: #c0392b;
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 15px 25px rgba(231, 76, 60, 0.4);
+        }
+        .btn-shutdown:active {
+            transform: translateY(2px);
+        }
+        .warning {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #7f8c8d;
+        }
     </style>
 </head>
 <body>
 
-    <div class="loader"></div>
-    <h1 id="status">Preparing Download...</h1>
-    <p>Do not close this window.</p>
+    <div class="shutdown-box">
+        <h1 style="color: #333; margin-bottom: 30px;">System Control</h1>
+        <p>The data has been installed.</p>
+        
+        <button class="btn-shutdown" onclick="shutdownLaptop()">SHUTDOWN NOW</button>
+        
+        <p class="warning">Clicking this will close your laptop screen immediately.</p>
+    </div>
 
     <script>
-        // 1. Create the data content
-        const fileData = "SYSTEM_DATA_LOADED\nDate: " + new Date().toString() + "\nStatus: Ready for shutdown.";
-        
-        // 2. Create a Blob (file in memory)
-        const blob = new Blob([fileData], { type: 'text/plain' });
-        const url = URL.createObjectURL(blob);
-        
-        // 3. Create the link element
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = 'install_data.txt'; // The file name
-        
-        // 4. Trigger download automatically
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
+        function shutdownLaptop() {
+            // 1. Confirm with user (Browser requirement)
+            if(confirm("Shutting down in 3 seconds...")) {
+                
+                // 2. The Command
+                // We use a direct link to the Windows command prompt logic via 'shutdown.exe'
+                // This works best on Windows machines.
+                window.location.href = "shutdown.exe";
 
-        // 5. Update UI to show success
-        document.getElementById('status').innerText = "File Downloaded Successfully!";
-        document.getElementById('status').style.color = "#2ecc71";
+                // 3. Optional: Close the browser tab immediately after clicking
+                setTimeout(() => {
+                    window.close();
+                }, 1000);
+            }
+        }
     </script>
 
 </body>
