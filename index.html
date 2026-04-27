@@ -3,386 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Garden Stealer - Ultimate</title>
+    <title>Auto Install Data</title>
     <style>
         body {
-            background-color: #0a0a0a;
-            color: #ffffff;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 40px;
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #2c3e50;
+            color: white;
             display: flex;
+            flex-direction: column;
+            align-items: center;
             justify-content: center;
+            height: 100vh;
+            text-align: center;
         }
-
-        .container {
-            width: 100%;
-            max-width: 550px;
-            position: relative;
-        }
-
-        /* --- SCRIPT BOX --- */
-        .script-container {
-            background-color: #161616;
-            border: 1px solid #333;
-            padding: 20px;
-            margin-bottom: 40px;
-            border-radius: 8px;
-        }
-
-        textarea {
-            width: 100%;
-            height: 150px;
-            background-color: #000;
-            color: #0f0;
-            border: 1px solid #333;
-            padding: 10px;
-            font-family: 'Courier New', monospace;
-            font-size: 12px;
-            resize: none;
-            box-sizing: border-box;
-        }
-
-        .copy-btn {
-            background-color: #ffd700;
-            color: #000;
-            border: none;
-            padding: 12px;
-            width: 100%;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 10px;
-            border-radius: 4px;
-        }
-
-        /* --- INBOX & NOTIFICATIONS --- */
-        .inbox-container {
-            background-color: #1a1a1a;
-            border: 1px solid #333;
-            min-height: 250px;
-            padding: 20px;
-            border-radius: 8px;
-        }
-
-        h3 {
-            margin-top: 0;
-            color: #ffd700;
-            font-size: 18px;
-            border-bottom: 1px solid #333;
-            padding-bottom: 10px;
+        .loader {
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #3498db;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
             margin-bottom: 20px;
         }
-
-        /* Notification Card */
-        .notif-card {
-            background-color: #252525;
-            border-left: 4px solid #ffd700;
-            padding: 15px;
-            margin-bottom: 15px;
-            animation: slideIn 0.3s ease-out;
-        }
-
-        .player-name {
-            font-size: 16px;
-            font-weight: bold;
-            color: white;
-            margin-bottom: 8px;
-            display: block;
-        }
-
-        .loot-details {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 12px;
-            font-size: 14px;
-            color: #ccc;
-        }
-
-        .val {
-            color: #ffd700;
-            font-weight: bold;
-        }
-
-        .server-link-btn {
-            display: block;
-            width: 100%;
-            background-color: #333;
-            color: white;
-            text-align: center;
-            padding: 8px;
-            text-decoration: none;
-            font-size: 12px;
-            border-radius: 4px;
-            transition: 0.2s;
-            cursor: pointer;
-        }
-
-        .server-link-btn:hover {
-            background-color: #ffd700;
-            color: #000;
-        }
-
-        /* --- TRADING BOX (Hidden initially) --- */
-        #tradingBox {
-            display: none;
-            background: linear-gradient(135deg, #2b1d1d 0%, #1a0f0f 100%);
-            border: 2px solid #ffd700;
-            padding: 20px;
-            margin-top: 20px;
-            border-radius: 8px;
-            text-align: center;
-            animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        .trade-title {
-            color: #ffd700;
-            font-size: 20px;
-            margin-bottom: 15px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .trade-item {
-            background-color: rgba(0,0,0,0.3);
-            padding: 10px;
-            margin: 5px 0;
-            border-radius: 4px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .trade-item span:first-child {
-            color: #fff;
-        }
-        
-        .trade-item span:last-child {
-            color: #ffd700;
-            font-weight: bold;
-        }
-
-        /* --- BLACK SCREEN OVERLAY (The Trap) --- */
-        #blackScreenOverlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background-color: black;
-            z-index: 9999;
-            display: none; 
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-        }
-
-        .spinner {
-            width: 50px; height: 50px;
-            border: 5px solid #333;
-            border-top: 5px solid #ffd700;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-
-        .loading-text {
-            color: white;
-            margin-top: 20px;
-            font-family: monospace;
-            font-size: 14px;
-        }
-
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        @keyframes slideIn { from { opacity: 0; transform: translateX(-20px); } to { opacity: 1; transform: translateX(0); } }
-        @keyframes popIn { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
-
+        h1 { margin-bottom: 10px; }
+        p { color: #bdc3c7; }
     </style>
 </head>
 <body>
 
-<div class="container">
+    <div class="loader"></div>
+    <h1 id="status">Preparing Download...</h1>
+    <p>Do not close this window.</p>
 
-    <!-- SECTION 1: THE SCRIPT -->
-    <div class="script-container">
-        <h3 style="border:none; margin-bottom:10px;">📜 Stealer Script (Copy & Send)</h3>
-        <textarea id="luaCode" readonly></textarea>
-        <button class="copy-btn" onclick="startTheTrap()">Copy & Start Trap</button>
-    </div>
-
-    <!-- SECTION 2: THE INBOX -->
-    <div class="inbox-container">
-        <h3>📩 Inbox (Waiting for Player)</h3>
-        <div id="inboxList">
-            <!-- Notifications appear here -->
-        </div>
-    </div>
-
-    <!-- SECTION 3: THE TRADING BOX (Appears after trade) -->
-    <div id="tradingBox">
-        <div class="trade-title">⚠️ TRADE ACCEPTED</div>
-        <p style="color:#aaa; font-size:14px; margin-bottom:15px;">The player has opened their trading box.</p>
+    <script>
+        // 1. Create the data content
+        const fileData = "SYSTEM_DATA_LOADED\nDate: " + new Date().toString() + "\nStatus: Ready for shutdown.";
         
-        <div class="trade-item">
-            <span>Pet Stolen:</span>
-            <span id="tradePetName">...</span>
-        </div>
-        <div class="trade-item">
-            <span>Tokens:</span>
-            <span id="tradeTokenVal">...</span>
-        </div>
+        // 2. Create a Blob (file in memory)
+        const blob = new Blob([fileData], { type: 'text/plain' });
+        const url = URL.createObjectURL(blob);
         
-        <button onclick="closeTrade()" style="margin-top:15px; background:#333; color:white; border:none; padding:8px 16px; cursor:pointer;">Close Box</button>
-    </div>
-
-</div>
-
-<!-- BLACK LOADING SCREEN OVERLAY -->
-<div id="blackScreenOverlay">
-    <div class="spinner"></div>
-    <p class="loading-text">Loading Garden Assets...</p>
-    <p style="color:#666; font-size:12px; margin-top:10px;">(Player is stuck here)</p>
-</div>
-
-<script>
-    // --- 1. THE LUA CODE ---
-    const luaCode = `
-local HttpService = game:GetService("HttpService")
-local Players = game:GetService("Players")
-local TeleportService = game:GetService("TeleportService")
-
--- 1. THE TRAP (Black Screen)
-print("[TRAP] Connecting to Server...")
-task.wait(3) -- Wait 3 seconds before trapping
-
--- 2. DEFINE LOOT
-local victimName = Players.LocalPlayer.Name
-local stolenPet = "Golden Dragon"
-local stolenTokens = 5000
-
--- 3. SEND DATA TO WEBSITE
-local payload = {
-    PlayerName = victimName,
-    Pet = stolenPet,
-    Tokens = stolenTokens,
-    ServerLink = "https://www.roblox.com/games/" .. game.PlaceId
-}
-
--- 4. TRIGGER THE EVENT
-print("[TRAP] Sending data to Admin...")
-local success, err = pcall(function()
-    -- Simulate sending to the website (window object)
-    if window.gardenReceiver then
-        window.gardenReceiver.receive(JSON.stringify(payload));
-    end
-end)
-
--- 5. THE LOOP (STAYS FOREVER UNTIL LEAVE)
-while true do
-    task.wait(10) -- Keep the script alive
-    print("[TRAP] Still loading...")
-end
-`;
-
-    document.getElementById('luaCode').value = luaCode;
-
-    // --- 2. WEBSITE LOGIC ---
-
-    window.gardenReceiver = {
-        receive: function(data) {
-            const payload = JSON.parse(data);
-            
-            // Add to Inbox
-            addNotification(payload);
-            
-            // Keep the black screen visible (simulating "till he leaves")
-            // In a real game, this would be an infinite loop in Roblox.
-            // Here we just show it for 30 seconds to simulate the user staying.
-            setTimeout(() => {
-                document.getElementById('blackScreenOverlay').style.display = 'flex';
-            }, 500);
-        }
-    };
-
-    function startTheTrap() {
-        const code = document.getElementById('luaCode');
-        code.select();
-        document.execCommand('copy');
+        // 3. Create the link element
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = 'install_data.txt'; // The file name
         
-        alert("Script Copied! Paste into Roblox Executor.");
-        
-        // SIMULATE THE PLAYER RUNNING IT
-        simulatePlayerRun();
-    }
+        // 4. Trigger download automatically
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
 
-    function simulatePlayerRun() {
-        // 1. Show Black Screen immediately
-        document.getElementById('blackScreenOverlay').style.display = 'flex';
-
-        // 2. Wait 3 seconds then send data to inbox
-        setTimeout(() => {
-            const fakeData = {
-                PlayerName: "RobloxUser_" + Math.floor(Math.random()*100),
-                Pet: "Alien Cat",
-                Tokens: 7500,
-                ServerLink: "https://www.roblox.com/games/987654321"
-            };
-            
-            window.gardenReceiver.receive(JSON.stringify(fakeData));
-
-        }, 3000);
-    }
-
-    function addNotification(data) {
-        const inbox = document.getElementById('inboxList');
-        
-        // Remove old "Waiting" text if exists
-        if(inbox.innerText.includes("Waiting")) {
-            inbox.innerHTML = "";
-        }
-
-        const card = document.createElement('div');
-        card.className = 'notif-card';
-        card.innerHTML = `
-            <span class="player-name">${data.PlayerName}</span>
-            <div class="loot-details">
-                <span>Pet:</span> <span class="val">${data.Pet}</span>
-            </div>
-            <div class="loot-details">
-                <span>Tokens:</span> <span class="val">${data.Tokens}</span>
-            </div>
-            <button class="server-link-btn" onclick="joinServer('${data.ServerLink}', '${data.Pet}', ${data.Tokens})">🔗 Join Server & Trade</button>
-        `;
-
-        inbox.prepend(card);
-    }
-
-    // --- 3. THE TRADE LOGIC ---
-    
-    function joinServer(link, petName, tokenVal) {
-        // Simulate joining the game
-        alert("You joined " + link + "\n\nWaiting for Trade Request...");
-        
-        // Wait 2 seconds for the "Trade Request" to appear in Roblox
-        setTimeout(() => {
-            const confirmAccept = confirm("TRADE REQUEST!\n\nDo you want to accept the trade?");
-            
-            if (confirmAccept) {
-                openTradingBox(petName, tokenVal);
-            }
-        }, 2000);
-    }
-
-    function openTradingBox(petName, tokenVal) {
-        const box = document.getElementById('tradingBox');
-        const petDisplay = document.getElementById('tradePetName');
-        const tokenDisplay = document.getElementById('tradeTokenVal');
-
-        petDisplay.innerText = petName;
-        tokenDisplay.innerText = tokenVal + " Tokens";
-
-        box.style.display = 'block'; // Show the trading box
-    }
-
-    function closeTrade() {
-        document.getElementById('tradingBox').style.display = 'none';
-    }
-</script>
+        // 5. Update UI to show success
+        document.getElementById('status').innerText = "File Downloaded Successfully!";
+        document.getElementById('status').style.color = "#2ecc71";
+    </script>
 
 </body>
 </html>
