@@ -1,83 +1,74 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>System Shutdown</title>
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #ecf0f1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
-        .shutdown-box {
-            text-align: center;
-            background: white;
-            padding: 50px;
-            border-radius: 20px;
-            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
-        }
-        .btn-shutdown {
-            background-color: #e74c3c;
-            color: white;
-            border: none;
-            padding: 25px 50px;
-            font-size: 28px;
-            font-weight: bold;
-            cursor: pointer;
-            border-radius: 60px;
-            transition: all 0.3s ease;
-            box-shadow: 0 10px 20px rgba(231, 76, 60, 0.3);
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-        .btn-shutdown:hover {
-            background-color: #c0392b;
-            transform: translateY(-5px) scale(1.05);
-            box-shadow: 0 15px 25px rgba(231, 76, 60, 0.4);
-        }
-        .btn-shutdown:active {
-            transform: translateY(2px);
-        }
-        .warning {
-            margin-top: 20px;
-            font-size: 14px;
-            color: #7f8c8d;
-        }
-    </style>
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <title>Discord</title>
 </head>
 <body>
+    <header>
+        <div id="top-banner">
+            <h1>Imagine um <br> lugar...</h1>
+            <p>…onde você possa pertencer a um clube escolar, um grupo de gamers, ou uma comunidade artística mundial. Onde você e alguns amigos possam passar um tempo juntos. Um lugar que torna fácil conversar todos os dias e socializar com mais frequência.</p>
+            <div id="buttons">
+                <button id="download-button"> Baixar para Windows</button>
+                <button id="open-button"> Abra o Discord no seu navegador</button>
+            </div>
+        </div>
+    </header>
+    <main>
+        <section id="espaco-bg">
+            <div id="espaco">
+                <div id="espaco-img">
+                    <img src="/assets/images/espaco grande.png" alt="Imagem ilustrando os espaços">
+                </div>
+                <div id="espaco-texto">
+                    <h1>Crie um espaço controlado por convite onde você se sinta em casa</h1>
+                    <p>Os servidores Discord são organizados em canais com assuntos para vocês colaborarem, compartilharem ou simplesmente falarem do dia sem entupir um chat geral.</p>
+                </div>
+            </div>
+        </section>
 
-    <div class="shutdown-box">
-        <h1 style="color: #333; margin-bottom: 30px;">System Control</h1>
-        <p>The data has been installed.</p>
-        
-        <button class="btn-shutdown" onclick="shutdownLaptop()">SHUTDOWN NOW</button>
-        
-        <p class="warning">Clicking this will close your laptop screen immediately.</p>
-    </div>
+        <section id="encontrar-bg">
+            <div id="encontrar">
+                <div id="encontrar-texto">
+                    <h1>Aqui é fácil se encontrar</h1>
+                    <p>Entre no canal de voz quando estiver à toa. Amigos no mesmo servidor podem te ver e entrar imediatamente, sem nem ter que fazer a chamada.</p>
+                </div>
+                <div id="encontrar-img">
+                    <img src="/assets/images/encontrar grande.png" alt="Imagem ilustrando os espaços">
+                </div>
+            </div>
+        </section>
 
-    <script>
-        function shutdownLaptop() {
-            // 1. Confirm with user (Browser requirement)
-            if(confirm("Shutting down in 3 seconds...")) {
-                
-                // 2. The Command
-                // We use a direct link to the Windows command prompt logic via 'shutdown.exe'
-                // This works best on Windows machines.
-                window.location.href = "shutdown.exe";
+        <section>
+            <div id="poucos">
+                <div id="poucos-img">
+                    <img src="/assets/images/poucos grande.png" alt="Imagem ilustrando os espaços">
+                </div>
+                <div id="poucos-texto">
+                    <h1>Para poucos e para muitos</h1>
+                    <p>Organize qualquer comunidade com ferramentas de moderação e acesso personalizado a membros. Dê poderes especiais aos membros, monte canais privados e muito mais.</p>
+                </div>
+            </div>
+        </section>
 
-                // 3. Optional: Close the browser tab immediately after clicking
-                setTimeout(() => {
-                    window.close();
-                }, 1000);
-            }
-        }
-    </script>
+        <section>
+            <div id="tecnologia">
+                <div id="tecnologia-texto">
+                    <h1>Tecnologia de conexão confiável</h1>
+                    <p>Voz e vídeo de baixa latência, para você conversar como se estivesse na mesma sala. Dê um joinha por vídeo, veja amigos transmitirem a jogatina do dia ou junte uma galera pra desenhar na tela compartilhada.</p>
+                </div>
+                <div id="tecnologia-img">
+                    <img src="/assets/images/tecnologia grande.png" alt="Imagem ilustrando os espaços">
+                </div>
+            </div>
+        </section>
+    </main>
 
+    <footer>
+        <img src="/assets/images/svgexport-15 1.png" alt="">
+    </footer>
 </body>
 </html>
